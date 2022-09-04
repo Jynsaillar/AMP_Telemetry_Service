@@ -6,7 +6,7 @@ namespace AMP_Telemetry_Service
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            // Add services to the container via dependency injection.
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -18,12 +18,14 @@ namespace AMP_Telemetry_Service
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
+                // Swagger is used for REST API testing during development.
+                // Usually accessible through https://localhost:<port>/swagger, depending on configuration.
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
 
             app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

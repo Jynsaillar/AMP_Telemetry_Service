@@ -8,7 +8,8 @@ namespace AMP_Telemetry_Service
 
             // Add services to the container via dependency injection.
 
-            builder.Services.AddControllers();
+            // The JsonOptions prevent the automatic adjustment of json properties to camelCase (this broke e.g. TOO_MANY_BITRATE_SWITCHES -> toO_MANY_BITRATE_SWITCHES).
+            builder.Services.AddControllers().AddJsonOptions(opts => opts.JsonSerializerOptions.PropertyNamingPolicy = null);
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

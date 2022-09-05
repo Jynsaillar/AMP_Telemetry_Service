@@ -1,5 +1,6 @@
 namespace AMP_Telemetry_Service.Models
 {
+    // TODO: Adjust/remove this!
     /// <summary>
     /// This object stores the required client-side metrics, as-is it is unused.
     /// </summary>

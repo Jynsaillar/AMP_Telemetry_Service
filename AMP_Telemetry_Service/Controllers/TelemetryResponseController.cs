@@ -7,7 +7,7 @@ namespace AMP_Telemetry_Service.Controllers
     /// This controller handles the routing for the telemetry API, specifically the calculation of the indices 
     /// </summary>
     [ApiController]
-    [Route("[controller]")] // This is a placeholder, for this specific controller (TelementryController), the route would be truncated to https://<url>:<port>/telemetry/.
+    [Route("telemetry")] // Methods of this controller are accessible on https://<url>:<port>/telemetry?<params>
     public class TelemetryResponseController : ControllerBase
     {
         private readonly ILogger<TelemetryResponseController> _logger;
@@ -17,6 +17,7 @@ namespace AMP_Telemetry_Service.Controllers
             _logger = logger;
         }
 
+
         [HttpGet(Name = "TelemetryResponse")] // Just an identifier to tell methods of same name apart.
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TelemetryResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -24,13 +25,18 @@ namespace AMP_Telemetry_Service.Controllers
         // e.g. /../telemetry?bitratesAvailable=1080&bitratesAvailable=720
         // To 'build' this array in C#, the whole set of available bitrates is supplied via query string as single values one-by-one, like shown above.
         public IActionResult TelemetryResponse(
-            int framesize, // Player frame size
+            int framesizeWidth, // Player frame size width
+            int framesizeHeight, // Player frame size height
             int bitrateSelected, // Player selected bitrate
             [FromQuery] int[] bitratesAvailable, // Bitrates available
             int bitrateSwitches, // Per 10s
             int shortBufferingEvents, // Buffering longer than 500ms, shorter than 1s
             int longBufferingEvents) // Buffering >= 1s
         {
+
+            // TODO: Remove for production environment!
+            this.ControllerContext.HttpContext.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+
             // Using local functions here to calculate the indices, since these functions will not be used outside of this method.
 
             // Calculates if any buffering events longer than 1s occured per 30s,
